@@ -19,7 +19,17 @@ _LOGO = None
 def logo_rgba():
     global _LOGO
     if _LOGO is None:
-        im = Image.open("/mnt/user-data/uploads/BR_logo_opcion_4.png").convert("RGBA")
+        import os
+        here = os.path.dirname(os.path.abspath(__file__))
+        candidatos = [
+            os.path.join(here, "BR_logo_opcion_4.png"),
+            "/mnt/user-data/uploads/BR_logo_opcion_4.png",
+            "/home/claude/BR_logo_opcion_4.png",
+        ]
+        ruta = next((c for c in candidatos if os.path.exists(c)), None)
+        if ruta is None:
+            raise FileNotFoundError("No se encontro BR_logo_opcion_4.png en: " + ", ".join(candidatos))
+        im = Image.open(ruta).convert("RGBA")
         px = im.load()
         for y in range(im.height):
             for x in range(im.width):
